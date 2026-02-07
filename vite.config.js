@@ -4,6 +4,6 @@ import tailwindcss from '@tailwindcss/vite'
 
 // https://vite.dev/config/
 export default defineConfig({
-  base: '/penalty-ot-calculator',
+  base: '/pot-cal',
   plugins: [vue(), tailwindcss()],
 })
