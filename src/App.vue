@@ -31,14 +31,13 @@ const penaltyPercentage = ref(null)
 
 watch(penaltyResult, (newVal) => {
   if (!newVal) return
-  console.log("HELLO")
 
-  const duration = 400 // ms (lower = faster)
+  const duration = 400
   const start = performance.now()
 
   function animate(now) {
     const progress = Math.min((now - start) / duration, 1)
-    displayAmount.value = Math.floor(progress * newVal)
+    displayAmount.value = Math.round(progress * newVal * 100) / 100
 
     if (progress < 1) {
       requestAnimationFrame(animate)
@@ -48,6 +47,7 @@ watch(penaltyResult, (newVal) => {
   displayAmount.value = 0
   requestAnimationFrame(animate)
 })
+
 
 const calculatePenalty = () => {
   Object.keys(data.value).forEach((key) => {
@@ -96,7 +96,7 @@ function rupeefy(amount) {
 </script>
 
 <template>
-  <section class="flex justify-center items-center w-full h-[100vh] px-[7%]">
+  <section @keydown.enter="calculatePenalty()" class="flex justify-center items-center w-full h-[100vh] px-[7%]">
     <Toast position="top-center" />
     <Tabs value="0">
       <TabList>
@@ -133,7 +133,7 @@ function rupeefy(amount) {
                 inputId="deficit_working_hours" suffix=" hr(s)" :invalid="data.d === null && penaltyTouched.d" />
             </div>
           </div>
-          <Button size="small" @click="calculatePenalty" label="Calculate" />
+          <Button  size="small" @click="calculatePenalty" label="Calculate" />
 
           <Transition name="bounce">
             <div v-if="penaltyResult" class="flex flex-col items-center">
